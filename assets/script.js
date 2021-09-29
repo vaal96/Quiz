@@ -1,21 +1,65 @@
 const startButton = document.getElementById('start-btn')
 const questionContainerElement = document.getElementById('question-container')
 const nextButton = document.getElementById('next-btn')
-
-let shuffledQuestions, currentQuestionIndex
 const questionElement = document.getElementById('question')
 const answerButtonsElement = document.getElementById('answer-buttons');
-var counter;
 const introContainer= document.getElementById('intro-container')
 const results = document.getElementById('results');
+
+let shuffledQuestions = [];
+let currentQuestionIndex = 0;
 //trying TODAY:
 var count=90;
-
+var counter;
  //1000 will  run it every 1 second
+// create questions here
+const questions = [
+	{
+	  question: 'How many days does it take for the Earth to orbit the Sun?',
+	  answers: [
+		{ text: '150' },
+		{ text: '189'},
+		{ text: '365'},
+		{ text: '289' }
+	  ],
+	  correct: '365'
+	},
+	{
+	  question: 'Random question in the mean time?',
+	  answers: [
+		{ text: 'answer'},
+		{ text: 'wrong' },
+		{ text: 'wrong' },
+		{ text: 'wrong' }
+	  ],
+	  correct:'answer'
+	},
+	{
+	  question: 'Fill in the blank question?',
+	  answers: [
+		{ text: 'Kinda' },
+		{ text: 'YES!!!'},
+		{ text: 'Um no'},
+		{ text: 'IDK'}
+	  ],
+	  correct: 'YES!!!'
+	},
+	{
+	  question: 'What is 4 * 2?',
+	  answers: [
+		{ text: '6' },
+		{ text: '9' },
+		{ text: '8' },
+		{ text: '21' }
+	
 
+	  ],
+	  correct: '8' 
+	}
+  ]
 
 function timer(){
-  count=count-1;
+  count--;
   if (count <= 0)
   {
      clearInterval(counter);
@@ -31,6 +75,8 @@ function timer(){
 startButton.addEventListener('click', startQuiz);
 
 function startQuiz() {
+    shuffledQuestions = questions.sort(() => Math.random() - .5);
+	console.log(questions)
 	counter=setInterval(timer, 1000);
 	introContainer.classList.add('hide')
 	results.classList.add('hide')
@@ -44,23 +90,20 @@ function startQuiz() {
 nextButton.addEventListener('click', nextQuestion);
 
 function nextQuestion(){
-	resetQuiz();
-	shuffledQuestions = questions.sort(() => Math.random() - .5);
+	// resetQuiz();
 	showQuestion(shuffledQuestions[currentQuestionIndex]);
 
 }
 // got from a Youtube Video Tutorial:
 function showQuestion(question) {
+	answerButtonsElement.innerHTML="";
 	questionElement.innerText = question.question
-	questions.answers.forEach(answer => {
+	question.answers.forEach(answer => {
 	  const button = document.createElement('button')
 	  button.innerText = answer.text
-	  button.classList.add('btn')
-	  if (answer.correct) {
-		button.dataset.correct = answer.correct
-	  }
-	  button.addEventListener('click', selectAnswer)
-	  answerButtonsElement.appendChild(button)
+	  button.classList.add('btn') 
+	  button.classList.add('list-item') 
+	  answerButtonsElement.append(button)
 	})
   }
 // reset quiz
@@ -103,41 +146,7 @@ function showQuestion(question) {
 
 
 
-// create questions here
-const questions = [
-	{
-	  question: 'How many days does it take for the Earth to orbit the Sun?',
-	  answers: [
-		{ text: '365', correct: true },
-		{ text: '289', correct: false }
-	  ]
-	},
-	{
-	  question: 'Random question in the mean time?',
-	  answers: [
-		{ text: 'answer', correct: true },
-		{ text: 'wrong', correct: false },
-		{ text: 'wrong', correct: false },
-		{ text: 'wrong', correct: false }
-	  ]
-	},
-	{
-	  question: 'Fill in the blank question?',
-	  answers: [
-		{ text: 'Kinda', correct: true },
-		{ text: 'YES!!!', correct: true },
-		{ text: 'Um no', correct: false },
-		{ text: 'IDK', correct: false }
-	  ]
-	},
-	{
-	  question: 'What is 4 * 2?',
-	  answers: [
-		{ text: '6', correct: false },
-		{ text: '8', correct: true }
-	  ]
-	}
-  ]
+
 
 // saving them in local storage ?
 window.localStorage.setItem('name', 'SCORE');
